@@ -9,6 +9,8 @@ use crate::Packet;
 mod fragment;
 pub use fragment::FragmentAction;
 
+mod tamper;
+pub use tamper::TamperAction;
 
 /// Describes a Geneva action, or the steps to perform to manipulate a packet.
 pub trait Action: fmt::Display {
@@ -30,6 +32,9 @@ pub enum GenevaAction {
 
     /// The `fragment` action.
     Fragment(FragmentAction),
+
+    /// The `tamper` action.
+    Tamper(TamperAction),
 }
 
 impl Action for GenevaAction {
@@ -39,6 +44,7 @@ impl Action for GenevaAction {
             Self::Drop(a) => a.run(pkt),
             Self::Duplicate(a) => a.run(pkt),
             Self::Fragment(a) => a.run(pkt),
+            Self::Tamper(a) => a.run(pkt),
         }
     }
 }
@@ -50,6 +56,7 @@ impl fmt::Display for GenevaAction {
             Self::Drop(a) => a.fmt(f),
             Self::Duplicate(a) => a.fmt(f),
             Self::Fragment(a) => a.fmt(f),
+            Self::Tamper(a) => a.fmt(f),
         }
     }
 }
