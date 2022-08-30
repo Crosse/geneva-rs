@@ -122,37 +122,49 @@
 //! See <https://censorship.ai> for more information about Geneva itself.
 //!
 //! [geneva]: https://geneva.cs.umd.edu/papers/geneva_ccs19.pdf
-pub mod actions;
-pub mod errors;
-pub mod triggers;
 
+pub mod actions;
+#[doc(inline)]
+pub use actions::*;
+
+pub mod errors;
+#[doc(inline)]
 pub use crate::errors::*;
 
+pub mod strategy;
+#[doc(inline)]
+pub use strategy::*;
+
+pub mod triggers;
+#[doc(inline)]
+pub use triggers::*;
+
+/// Represents a network packet as a vector of raw bytes.
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct Packet(Vec<u8>);
 
 impl Packet {
-    // Creates a new Packet by consuming the vector. This operation does not copy or allocate.
+    /// Creates a new Packet by consuming the vector. This operation does not copy or allocate.
     pub fn new(p: Vec<u8>) -> Self {
         Self(p)
     }
 
-    // Creates a new Packet by copying the slice into itself.
+    /// Creates a new Packet by copying the slice into itself.
     pub fn new_from_slice(s: &[u8]) -> Self {
         Self(s.to_vec())
     }
 
-    // Returns the number of bytes in the packet.
+    /// Returns the number of bytes in the packet.
     pub fn len(&self) -> usize {
         self.0.len()
     }
 
-    // Returns `true` if the packet is zero-length.
+    /// Returns `true` if the packet is zero-length.
     pub fn is_empty(&self) -> bool {
         self.0.is_empty()
     }
 
-    // Extracts a slice containing the entire packet.
+    /// Extracts a slice containing the entire packet.
     pub fn as_slice(&self) -> &[u8] {
         &self.0
     }
