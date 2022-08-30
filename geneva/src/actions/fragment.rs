@@ -5,6 +5,19 @@ use crate::Packet;
 
 use super::{Action, GenevaAction};
 
+/// An [Action] that takes the original packet and fragments it, then applies separate `Action`s to
+/// each fragment.
+///
+/// The syntax of a fragment rule is: `fragment{protocol:offset:inOrder}(a1, a2)`.
+///
+/// Since both the IP and TCP layers support fragmentation, the rule must specify which layer's
+/// payload to fragment. The first fragment will include up to _offset_ bytes of the layer's
+/// payload; the second fragment will contain the rest. As an example, given an IPv4 packet with a
+/// 60-byte payload and an 8-byte offset, the first fragment will have the same IP header as the
+/// original packet (aside from the fields that must be fixed) and then the first eight bytes of the
+/// payload. The second fragment will contain the other 52 bytes. (You can also indicate that the
+/// fragments be returned out-of-order; i.e., reversed, by specifying "False" for the _inOrder_
+/// argument in the syntax above.)
 #[derive(Debug, Clone)]
 pub struct FragmentAction {
     protocol: u16,
@@ -16,6 +29,7 @@ pub struct FragmentAction {
 }
 
 impl FragmentAction {
+    /// Creates a new [FragmentAction].
     pub fn new(
         protocol: u16,
         fragment_size: u16,

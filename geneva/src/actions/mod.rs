@@ -9,8 +9,27 @@ use crate::Packet;
 mod fragment;
 pub use fragment::FragmentAction;
 
+
+/// Describes a Geneva action, or the steps to perform to manipulate a packet.
+pub trait Action: fmt::Display {
+    /// Runs this action on the given packet, producing zero or more potentially-modified packets.
+    fn run(&self, pkt: Packet) -> Result<Vec<Packet>>;
+}
+
+/// Represents one of the Geneva actions.
 #[derive(Debug, Clone)]
 pub enum GenevaAction {
+    /// The `send` action.
+    Send(SendAction),
+
+    /// The `drop` action.
+    Drop(DropAction),
+
+    /// The `duplicate` action.
+    Duplicate(DuplicateAction),
+
+    /// The `fragment` action.
+    Fragment(FragmentAction),
 }
 
 impl Action for GenevaAction {
@@ -35,7 +54,7 @@ impl fmt::Display for GenevaAction {
     }
 }
 
-/// A Geneva action that passes the given packet on without modification.
+/// An [Action] that passes the given packet on without modification.
 #[derive(Default, Debug, Clone, Copy)]
 pub struct SendAction {}
 
@@ -58,7 +77,11 @@ impl From<SendAction> for GenevaAction {
     }
 }
 
-/// A Geneva action that duplicates a packet and applies separate action trees to each.
+/// An [Action] that duplicates a packet and applies separate action trees to each.
+///
+/// The `duplicate(a1, a2)` action copies the original packet, then applies [Action] `a1` to the
+/// original and `a2` to the copy. For example, if `a1` and `a2` are both "[send](SendAction)"
+/// actions, then the action will yield two packets identical to the first.
 #[derive(Debug, Clone)]
 pub struct DuplicateAction {
     left: Box<GenevaAction>,
@@ -109,7 +132,7 @@ impl From<DuplicateAction> for GenevaAction {
     }
 }
 
-/// A Geneva action that drops the given packet.
+/// An [Action] that drops the given packet.
 #[derive(Default, Debug, Clone, Copy)]
 pub struct DropAction {}
 
