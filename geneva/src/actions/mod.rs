@@ -161,6 +161,38 @@ impl From<DropAction> for GenevaAction {
     }
 }
 
+/// Represents a Geneva (trigger, action) pair.
+///
+/// Technically, Geneva uses the term "action tree" to refer to the tree of actions in the tuple
+/// (trigger, action tree). In other words, `root_action` here is what they call the "action
+/// tree". They have no name for the (trigger, action tree) tuple, which this type actually
+/// represents.
+pub struct ActionTree {
+    /// The [Trigger] that, if matched, will fire this action tree.
+    pub trigger: GenevaTrigger,
+
+    /// The root [Action] of the tree. It may have subordinate actions that it calls.
+    pub root_action: Box<GenevaAction>,
+}
+
+impl ActionTree {
+    /// Returns `true` if this action tree's trigger matches the given [Packet].
+    pub fn matches(&self, pkt: &Packet) -> bool {
+        self.trigger.matches(pkt)
+    }
+
+    /// Applies this action tree to the [Packet], returning zero or more potentially-modified packets.
+    pub fn apply(&self, pkt: Packet) -> Result<Vec<Packet>> {
+        self.root_action.run(pkt)
+    }
+}
+
+impl fmt::Display for ActionTree {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}-{}-|", self.trigger, self.root_action)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
