@@ -4,6 +4,7 @@
 use std::fmt;
 
 use crate::errors::*;
+use crate::triggers::{GenevaTrigger, Trigger};
 use crate::Packet;
 
 mod fragment;
