@@ -103,6 +103,18 @@ pub struct TCPTrigger {
     gas: usize,
 }
 
+impl TCPTrigger {
+    /// Creates a new `TCPTrigger`.
+    pub fn new(field: TCPField, value: String, gas: usize) -> Result<Self> {
+        // TODO: validate fields
+        Ok(Self { field, value, gas })
+    }
+
+    pub fn value(&self) -> &str {
+        &self.value
+    }
+}
+
 impl Trigger for TCPTrigger {
     fn protocol(&self) -> String {
         "TCP".to_string()

@@ -79,13 +79,14 @@ pub struct IPTrigger {
 
 impl IPTrigger {
     /// Creates a new `IPTrigger`.
-    pub fn new(field: IPField, value: String, gas: usize, _ip_field: u8) -> Self {
-        Self {
+    pub fn new(field: IPField, value: String, gas: usize, _ip_field: u8) -> Result<Self> {
+        // TODO: validate fields
+        Ok(Self {
             field,
             value,
             gas,
             _ip_field,
-        }
+        })
     }
 }
 
