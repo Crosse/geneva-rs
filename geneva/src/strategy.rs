@@ -67,8 +67,8 @@ pub type Forest = Vec<ActionTree>;
 /// Zero or more action trees that can be applied to inbound or outbound packets.
 #[derive(Default, Debug)]
 pub struct Strategy {
-    pub inbound: Forest,
-    pub outbound: Forest,
+    pub outbound: Option<Forest>,
+    pub inbound: Option<Forest>,
 }
 
 impl Strategy {
@@ -79,6 +79,11 @@ impl Strategy {
             Direction::Outbound => &self.outbound,
         };
 
+        if forest.is_none() {
+            return Ok(vec![pkt]);
+        }
+
+        let forest = forest.as_ref().unwrap();
         if forest.is_empty() {
             return Ok(vec![pkt]);
         }
