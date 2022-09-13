@@ -115,3 +115,20 @@ impl Strategy {
         Ok(packets)
     }
 }
+
+impl fmt::Display for Strategy {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let outbound = match &self.outbound {
+            Some(f) => f.iter().map(|a| a.to_string()).collect(),
+            None => "".to_string(),
+        };
+
+        let inbound = match &self.inbound {
+            // we don't want a trailing space at the end
+            Some(f) => format!(" {}", f.iter().map(|a| a.to_string()).collect::<String>()),
+            None => "".to_string(),
+        };
+
+        write!(f, r#"{} \/{}"#, outbound, inbound)
+    }
+}

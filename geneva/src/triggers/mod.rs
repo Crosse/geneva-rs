@@ -66,6 +66,9 @@ impl Trigger for GenevaTrigger {
 
 impl fmt::Display for GenevaTrigger {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str("")
+        match self {
+            Self::IP(t) => t.fmt(f),
+            Self::TCP(t) => t.fmt(f),
+        }
     }
 }
