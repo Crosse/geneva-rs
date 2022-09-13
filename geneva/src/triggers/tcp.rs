@@ -6,7 +6,7 @@ use crate::triggers::Trigger;
 use crate::Packet;
 
 /// Supported fields in the TCP header that can be used for triggers.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum TCPField {
     SourcePort,
     DestPort,

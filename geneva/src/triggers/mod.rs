@@ -34,6 +34,18 @@ pub enum GenevaTrigger {
     TCP(TCPTrigger),
 }
 
+impl From<TCPTrigger> for GenevaTrigger {
+    fn from(t: TCPTrigger) -> Self {
+        Self::TCP(t)
+    }
+}
+
+impl From<IPTrigger> for GenevaTrigger {
+    fn from(t: IPTrigger) -> Self {
+        Self::IP(t)
+    }
+}
+
 impl Trigger for GenevaTrigger {
     fn protocol(&self) -> String {
         match self {
