@@ -1,0 +1,28 @@
+protocol = { ^"tcp" | ^"ip" }
+boolean = { "True" | "False" }
+field = @{ (ASCII_ALPHANUMERIC | "-")+ }
+value = @{ ASCII_ALPHANUMERIC+ }
+offset = @{ ASCII_DIGIT+ }
+
+in_order = { boolean }
+tamper_mode = { "replace" | "corrupt" | "add" }
+
+rule_body = { ("(" ~ action? ~ comma ~ action? ~ ")")? }
+comma = { "," }
+
+send = { "send" }
+drop = { "drop" }
+duplicate = { "duplicate" ~ rule_body }
+fragment = { "fragment{" ~ protocol ~ ":" ~ offset ~ ":" ~ in_order ~ "}" ~ rule_body }
+tamper = { "tamper{" ~ protocol ~ ":" ~ field ~ ":" ~ tamper_mode ~ (":" ~ value)? ~ "}" }
+
+action = { send | drop | duplicate | tamper }
+
+trigger = { "[" ~ protocol ~ ":" ~ field ~ ":" ~ value ~ "]" }
+
+action_tree = { trigger ~ "-" ~ action ~ "-|" }
+forest = { action_tree* }
+forest_separator = { "\\/" }
+strategy = { SOI ~ forest? ~ forest_separator ~ forest? ~ EOI }
+
+WHITESPACE = _{ " " }

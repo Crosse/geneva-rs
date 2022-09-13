@@ -122,6 +122,9 @@
 //! See <https://censorship.ai> for more information about Geneva itself.
 //!
 //! [geneva]: https://geneva.cs.umd.edu/papers/geneva_ccs19.pdf
+extern crate pest;
+#[macro_use]
+extern crate pest_derive;
 
 pub mod actions;
 #[doc(inline)]
@@ -138,6 +141,9 @@ pub use strategy::*;
 pub mod triggers;
 #[doc(inline)]
 pub use triggers::*;
+
+mod parser;
+pub use parser::*;
 
 /// Represents a network packet as a vector of raw bytes.
 #[derive(Debug, Clone, Eq, PartialEq)]
