@@ -168,6 +168,7 @@ impl From<DropAction> for GenevaAction {
 /// (trigger, action tree). In other words, `root_action` here is what they call the "action
 /// tree". They have no name for the (trigger, action tree) tuple, which this type actually
 /// represents.
+#[derive(Debug, Clone)]
 pub struct ActionTree {
     /// The [Trigger] that, if matched, will fire this action tree.
     pub trigger: GenevaTrigger,

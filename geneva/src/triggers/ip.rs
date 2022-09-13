@@ -6,6 +6,7 @@ use crate::triggers::Trigger;
 use crate::Packet;
 
 /// Supported fields in the IP header that can be used for triggers.
+#[derive(Debug, Clone)]
 pub enum IPField {
     Version,
     IHL,
@@ -68,6 +69,7 @@ impl FromStr for IPField {
 }
 
 /// A [Trigger] that matches on the IP layer.
+#[derive(Debug, Clone)]
 pub struct IPTrigger {
     field: IPField,
     value: String,

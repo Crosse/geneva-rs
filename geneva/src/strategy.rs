@@ -65,6 +65,7 @@ impl fmt::Display for Direction {
 pub type Forest = Vec<ActionTree>;
 
 /// Zero or more action trees that can be applied to inbound or outbound packets.
+#[derive(Default, Debug)]
 pub struct Strategy {
     pub inbound: Forest,
     pub outbound: Forest,

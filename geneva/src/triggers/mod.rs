@@ -25,6 +25,7 @@ pub trait Trigger: fmt::Display {
 }
 
 /// Represents one of the Geneva triggers.
+#[derive(Debug, Clone)]
 pub enum GenevaTrigger {
     /// A trigger that applies to a packet's IP layer.
     IP(IPTrigger),
