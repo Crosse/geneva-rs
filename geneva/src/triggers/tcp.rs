@@ -5,6 +5,7 @@ use crate::errors::*;
 use crate::triggers::Trigger;
 use crate::Packet;
 
+/// Supported fields in the TCP header that can be used for triggers.
 pub enum TCPField {
     SourcePort,
     DestPort,
@@ -93,6 +94,7 @@ impl FromStr for TCPField {
     }
 }
 
+/// A [Trigger] that matches on the TCP layer.
 pub struct TCPTrigger {
     field: TCPField,
     value: String,

@@ -5,10 +5,16 @@ use crate::Packet;
 
 use super::{Action, GenevaAction};
 
+/// Describes the way that the `tamper` action can manipulate a packet.
 #[derive(Debug, Clone)]
 pub enum TamperMode {
+    /// Replaces the value of a packet field with the given value.
     Replace,
+
+    /// Replaces the value of a packet field with a randomly-generated value.
     Corrupt,
+
+    /// Adds the value to a packet field.
     Add,
 }
 
@@ -22,6 +28,7 @@ impl fmt::Display for TamperMode {
     }
 }
 
+/// An [Action] that modifies packets (typically values in the packet header).
 #[derive(Debug, Clone)]
 pub struct TamperAction {
     protocol: String,
@@ -32,6 +39,7 @@ pub struct TamperAction {
 }
 
 impl TamperAction {
+    /// Creates a new `TamperAction`.
     pub fn new(
         protocol: String,
         field: String,

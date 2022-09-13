@@ -29,7 +29,7 @@ pub struct FragmentAction {
 }
 
 impl FragmentAction {
-    /// Creates a new [FragmentAction].
+    /// Creates a new `FragmentAction`.
     pub fn new(
         protocol: u16,
         fragment_size: u16,
